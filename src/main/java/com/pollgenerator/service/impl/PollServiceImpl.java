@@ -8,6 +8,7 @@ import com.pollgenerator.model.Poll;
 import com.pollgenerator.model.PollOption;
 import com.pollgenerator.model.PollType;
 import com.pollgenerator.model.PollVote;
+import com.pollgenerator.model.dto.PollResultDto;
 import com.pollgenerator.repository.PollOptionRepository;
 import com.pollgenerator.repository.PollRepository;
 import com.pollgenerator.repository.PollVoteRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +79,17 @@ public class PollServiceImpl implements PollService {
         }
 
         return pollVoteRepository.saveAll(votes);
+    }
+
+    @Override
+    public List<PollResultDto> getPollResultsById(UUID pollId) {
+        List<PollOption> options = pollOptionRepository.findByPollId(pollId);
+
+        return options.stream()
+                .map(option -> new PollResultDto(
+                        option.getId(),
+                        option.getValue(),
+                        pollVoteRepository.countByPollOptionId(option.getId())))
+                .collect(Collectors.toList());
     }
 }

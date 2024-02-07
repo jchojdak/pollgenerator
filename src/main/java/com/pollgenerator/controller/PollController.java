@@ -3,6 +3,7 @@ package com.pollgenerator.controller;
 import com.pollgenerator.model.Poll;
 import com.pollgenerator.model.PollVote;
 import com.pollgenerator.model.dto.PollDto;
+import com.pollgenerator.model.dto.PollResultDto;
 import com.pollgenerator.service.PollService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class PollController {
     @GetMapping("/{pollId}")
     public Poll getPoll(@PathVariable UUID pollId) {
         return pollService.getById(pollId);
+    }
+
+    @GetMapping("/{pollId}/results")
+    public List<PollResultDto> getPollResults(@PathVariable UUID pollId) {
+        return pollService.getPollResultsById(pollId);
     }
 
     @PostMapping

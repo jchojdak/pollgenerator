@@ -13,4 +13,6 @@ public interface PollVoteRepository extends JpaRepository<PollVote, UUID> {
     List<PollVote> findByIpAddressAndPollOption_Id(String ipAddress, UUID pollOptionId);
 
     List<PollVote> findByIpAddressAndPollOption_Poll_Id(String ipAddress, UUID pollId);
+
+    Long countByPollOptionId(UUID id);
 }

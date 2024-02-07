@@ -2,6 +2,7 @@ package com.pollgenerator.service;
 
 import com.pollgenerator.model.Poll;
 import com.pollgenerator.model.PollVote;
+import com.pollgenerator.model.dto.PollResultDto;
 
 import java.util.List;
 import java.util.Set;
@@ -15,4 +16,6 @@ public interface PollService {
     Poll getById(UUID pollId);
 
     List<PollVote> addVotes(UUID pollId, Set<UUID> optionIds, String ipAddress);
+
+    List<PollResultDto> getPollResultsById(UUID pollId);
 }
