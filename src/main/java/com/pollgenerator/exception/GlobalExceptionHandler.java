@@ -25,4 +25,43 @@ public class GlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(AlreadyVotedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ExceptionResponse handleAlreadyVotedException(AlreadyVotedException e) {
+        ExceptionResponse response = new ExceptionResponse();
+
+        response.setStatusCode(HttpStatus.CONFLICT.value());
+        response.setMessage(e.getMessage());
+        response.setDate(LocalDateTime.now());
+
+        return response;
+    }
+
+    @ExceptionHandler(OptionNotBelongsToPollException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ExceptionResponse handleOptionNotBelongsToPollException(OptionNotBelongsToPollException e) {
+        ExceptionResponse response = new ExceptionResponse();
+
+        response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        response.setMessage(e.getMessage());
+        response.setDate(LocalDateTime.now());
+
+        return response;
+    }
+
+    @ExceptionHandler(MultipleVotesException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ExceptionResponse handleMultipleVotesException(MultipleVotesException e) {
+        ExceptionResponse response = new ExceptionResponse();
+
+        response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        response.setMessage(e.getMessage());
+        response.setDate(LocalDateTime.now());
+
+        return response;
+    }
+
 }
