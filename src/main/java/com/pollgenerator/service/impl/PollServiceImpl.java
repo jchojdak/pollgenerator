@@ -85,6 +85,8 @@ public class PollServiceImpl implements PollService {
     public List<PollResultDto> getPollResultsById(UUID pollId) {
         List<PollOption> options = pollOptionRepository.findByPollId(pollId);
 
+        if (options.isEmpty()) throw new ResourceNotFoundException("Poll not found with id: " + pollId);
+
         return options.stream()
                 .map(option -> new PollResultDto(
                         option.getId(),
