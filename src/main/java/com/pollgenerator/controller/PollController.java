@@ -4,17 +4,15 @@ import com.pollgenerator.model.Poll;
 import com.pollgenerator.model.PollVote;
 import com.pollgenerator.model.dto.PollDto;
 import com.pollgenerator.model.dto.PollResultDto;
-import com.pollgenerator.model.response.ExceptionResponse;
 import com.pollgenerator.service.PollService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/polls")
 @RequiredArgsConstructor
-@Tag(name = "Polls", description = "Endpoints for managing polls")
+@Tag(name = "Polls", description = "Endpoints to managing polls")
 public class PollController {
 
     private final PollService pollService;
@@ -63,7 +61,7 @@ public class PollController {
     @PostMapping
     @Operation(summary = "Add a new poll")
     @ApiResponse(responseCode = "200", description = "Successfully added new poll")
-    public Poll addPoll(@RequestBody PollDto pollDto) {
+    public Poll addPoll(@Valid @RequestBody PollDto pollDto) {
         Poll poll = modelMapper.map(pollDto, Poll.class);
         return pollService.save(poll);
     }
@@ -77,7 +75,7 @@ public class PollController {
             @ApiResponse(responseCode = "409", description = "Already voted", content = @Content)
     })
     public List<PollVote> addVotes(HttpServletRequest request,
-                                  @RequestBody Set<UUID> pollOptionIds,
+                                  @Valid @NotEmpty @RequestBody Set<UUID> pollOptionIds,
                                   @PathVariable UUID pollId) {
         String ipAddress = request.getRemoteAddr();
 
